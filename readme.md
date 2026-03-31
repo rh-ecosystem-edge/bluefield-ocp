@@ -37,8 +37,8 @@
     Set Nvidia DPU stack versions:
 
     ```bash
-    export DOCA_VERSION="3.3.0"
-    export OFED_VERSION="26.01-1.0.0.0"
+    export DOCA_VERSION="3.2.0"
+    export OFED_VERSION="25.10-1.7.1.0"
     export DOCA_DISTRO="rhel9.6"
     ```
 
