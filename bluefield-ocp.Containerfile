@@ -33,15 +33,27 @@ ARG D_OFED_SRC_ARCHIVE="MLNX_OFED_SRC-${D_OFED_SRC_TYPE}${D_OFED_VERSION}.tgz"
 
 RUN dnf install -y automake autoconf libtool perl && dnf clean all
 
-RUN wget --no-check-certificate -O ${D_OFED_SRC_ARCHIVE} ${DOCA_SOURCES_URL}/mlnx_ofed/${D_OFED_SRC_ARCHIVE}; \
+RUN D_OFED_SRC_ARCHIVE=${D_OFED_SRC_ARCHIVE}; \
+  wget --no-check-certificate -O ${D_OFED_SRC_ARCHIVE} ${DOCA_SOURCES_URL}/mlnx_ofed/${D_OFED_SRC_ARCHIVE}; \
   if [ $? -ne 0 ]; then \
   wget --no-check-certificate -O ${D_OFED_SRC_ARCHIVE} ${DOCA_SOURCES_URL}/MLNX_OFED/${D_OFED_SRC_ARCHIVE}; \
-  fi
-
-RUN if file ${D_OFED_SRC_ARCHIVE} | grep compressed; then \
-  tar -xzf ${D_OFED_SRC_ARCHIVE}; \
+  fi; \
+  if [ $? -ne 0 ]; then \
+  D_OFED_SRC_ARCHIVE=OFED-internal-${D_OFED_VERSION}.tgz; \
+  wget --no-check-certificate -O ${D_OFED_SRC_ARCHIVE} ${DOCA_SOURCES_URL}/mlnx_ofed/${D_OFED_SRC_ARCHIVE}; \
+  fi; \
+  if [ $? -ne 0 ]; then \
+  wget --no-check-certificate -O ${D_OFED_SRC_ARCHIVE} ${DOCA_SOURCES_URL}/MLNX_OFED/${D_OFED_SRC_ARCHIVE}; \
+  fi; \
+  \
+  \
+  if file ${D_OFED_SRC_ARCHIVE} | grep compressed; then \
+    tar -xzf ${D_OFED_SRC_ARCHIVE}; \
   else \
-  mv ${D_OFED_SRC_ARCHIVE}/MLNX_OFED_SRC-${D_OFED_VERSION} . ; \
+    mv ${D_OFED_SRC_ARCHIVE}/MLNX_OFED_SRC-${D_OFED_VERSION} . ; \
+  fi; \
+  if [ ! -d MLNX_OFED_SRC-${D_OFED_VERSION} ]; then \
+    mv OFED-internal-${D_OFED_VERSION} MLNX_OFED_SRC-${D_OFED_VERSION}; \
   fi
 
 RUN set -x && \
@@ -142,10 +154,10 @@ RUN if [ "$KERNEL_TYPE" = "64k" ]; then \
   echo "Installing 64k kernel variant..." && \
   KVER=$(rpm -q kernel-core --queryformat '%{VERSION}-%{RELEASE}') && \
   dnf install -y --setopt=install_weak_deps=False \
-    kernel-64k-core-${KVER} \
-    kernel-64k-modules-${KVER} \
-    kernel-64k-modules-core-${KVER} \
-    kernel-64k-modules-extra-${KVER} && \
+  kernel-64k-core-${KVER} \
+  kernel-64k-modules-${KVER} \
+  kernel-64k-modules-core-${KVER} \
+  kernel-64k-modules-extra-${KVER} && \
   rpm -e --nodeps kernel kernel-core kernel-modules kernel-modules-core kernel-modules-extra; \
   fi
 
