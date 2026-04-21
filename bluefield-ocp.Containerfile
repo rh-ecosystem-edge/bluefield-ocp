@@ -9,6 +9,7 @@ ARG D_DOCA_BASEURL_AUTH=false
 ARG D_DOCA_BASEURL_AUTH_CREDS=
 ARG D_OFED_VERSION
 ARG KERNEL_TYPE=default
+ARG EARLY_KERNEL_REPO_URL
 
 
 FROM ${BUILDER_IMAGE} AS builder
@@ -149,6 +150,21 @@ enabled=1
 EOF
 
 WORKDIR /
+
+ARG EARLY_KERNEL_REPO_URL
+
+# Add early-kernel repo if URL is provided (for 64k packages not yet in EUS repos)
+RUN if [ -n "${EARLY_KERNEL_REPO_URL}" ]; then \
+  cat <<EOF > /etc/yum.repos.d/early-kernel.repo
+[early-kernel]
+name=early-kernel
+baseurl=${EARLY_KERNEL_REPO_URL}
+includepkgs=kernel,kernel-*
+enabled=1
+gpgcheck=0
+EOF
+  echo "Added early-kernel repo: ${EARLY_KERNEL_REPO_URL}"; \
+  fi
 
 RUN if [ "$KERNEL_TYPE" = "64k" ]; then \
   echo "Installing 64k kernel variant..." && \
