@@ -151,6 +151,10 @@ EOF
 WORKDIR /
 
 RUN if [ "$KERNEL_TYPE" = "64k" ]; then \
+  OCP_MM=$(echo "${RHCOS_VERSION}" | cut -d. -f1,2) && \
+  OCP_PREV=$(echo "${OCP_MM}" | awk -F. '{print $1"."$2-1}') && \
+  dnf config-manager --set-enabled rhocp-${OCP_MM}-for-rhel-9-aarch64-rpms || true && \
+  dnf config-manager --set-enabled rhocp-${OCP_PREV}-for-rhel-9-aarch64-rpms || true && \
   echo "Installing 64k kernel variant..." && \
   KVER=$(rpm -q kernel-core --queryformat '%{VERSION}-%{RELEASE}') && \
   dnf install -y --setopt=install_weak_deps=False \
