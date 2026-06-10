@@ -256,7 +256,7 @@ RUN dnf -y install --setopt=install_weak_deps=False \
   nvmetcli\
   ${BMC_FW_PACKAGES} \
   vim-common \
-  dhcp-client && \
+  dhcpcd && \
   dnf clean all && \
   #
   rpm -e --nodeps ngauge || true && \
