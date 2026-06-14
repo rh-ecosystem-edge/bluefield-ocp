@@ -40,7 +40,6 @@ ARG FW_PACKAGE=mlnx-fw-updater-signed
 ARG BMC_FW_PACKAGES="bf3-bmc-fw-signed bf3-cec-fw-signed bf3-bmc-gi-signed bf3-bmc-nic-fw*"
 
 ARG KERNEL_TYPE=default
-ARG INSTALL_PKA=true
 
 # Pin dnf releasever to the exact RHEL minor version (e.g. 10.0) from /etc/os-release
 # and enable EUS repos for exact kernel version matching
@@ -256,7 +255,10 @@ RUN dnf -y install --setopt=install_weak_deps=False \
   nvmetcli\
   ${BMC_FW_PACKAGES} \
   vim-common \
-  dhcpcd && \
+  dhcpcd \
+  libpka \
+  libpka-engine \
+  libpka-testutils && \
   dnf clean all && \
   #
   rpm -e --nodeps ngauge || true && \
@@ -269,17 +271,6 @@ RUN dnf -y install --setopt=install_weak_deps=False \
   rpm -e --nodeps libpcap-devel || true && \
   rpm -e --nodeps elfutils-libelf-devel || true && \
   rpm -e --nodeps libyaml-devel || true
-
-# pka packages: gated by INSTALL_PKA build-arg (default true).
-# Pass --build-arg INSTALL_PKA=false when building against a DOCA repo
-# that does not yet provide libpka for the target distro (e.g. RHEL10).
-RUN if [ "${INSTALL_PKA}" = "true" ]; then \
-  dnf -y install --setopt=install_weak_deps=False \
-    libpka \
-    libpka-engine \
-    libpka-testutils && \
-  dnf clean all; \
-  fi
 
 RUN --mount=type=bind,source=assets,target=/tmp/assets \
   # Copy OFED udev rules
