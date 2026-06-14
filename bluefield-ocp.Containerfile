@@ -235,6 +235,8 @@ RUN dnf -y install --setopt=install_weak_deps=False \
   kmod-iser \
   kmod-isert \
   kmod-srp \
+  kmod-kernel-mft-mlnx \
+  kmod-mlnx-nvme \
   mlnx-tools \
   ofed-scripts \
   kmod-mlxbf-pka \
