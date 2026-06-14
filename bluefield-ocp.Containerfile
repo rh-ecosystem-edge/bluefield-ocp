@@ -175,7 +175,7 @@ RUN \
   dnf clean all
 
 RUN dnf -y install --setopt=install_weak_deps=False \
-  doca-runtime \
+  doca-runtime-user \
   collectx-clxapi \
   doca-apsh-config \
   doca-bench \
@@ -232,7 +232,13 @@ RUN dnf -y install --setopt=install_weak_deps=False \
   ${FW_PACKAGE} \
   mlnx-ofa_kernel \
   kmod-mlnx-ofa_kernel \
+  kmod-iser \
+  kmod-isert \
+  kmod-srp \
+  mlnx-tools \
   ofed-scripts \
+  kmod-mlxbf-pka \
+  kmod-ipmb-host \
   opensm \
   opensm-libs \
   opensm-static \
