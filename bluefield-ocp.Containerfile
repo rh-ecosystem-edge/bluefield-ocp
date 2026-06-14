@@ -53,8 +53,7 @@ ENV D_DOCA_FINALURL=${D_DOCA_BASEURL:-https://linux.mellanox.com/public/repo/doc
 
 RUN --mount=type=secret,id=d-doca-baseurl-auth-creds/username-and-password \
   dnf config-manager --set-enabled codeready-builder-for-rhel-9-$(uname -m)-rpms || \
-  dnf config-manager --set-enabled codeready-builder-beta-for-rhel-9-$(uname -m)-rpms || \
-  dnf config-manager --set-enabled codeready-builder-for-rhel-10-$(uname -m)-rpms || true; \
+  dnf config-manager --set-enabled codeready-builder-beta-for-rhel-9-$(uname -m)-rpms; \
   dnf clean all; \
   mkdir -p /tmp/rpms; \
   if [ "${D_DOCA_BASEURL_AUTH}" = "true" ]; then \
@@ -176,7 +175,7 @@ RUN \
   #
   dnf clean all
 
-RUN dnf -y install --setopt=install_weak_deps=False --skip-broken \
+RUN dnf -y install --setopt=install_weak_deps=False \
   doca-runtime \
   collectx-clxapi \
   doca-apsh-config \
