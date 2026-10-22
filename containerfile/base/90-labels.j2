@@ -13,6 +13,9 @@ LABEL "NVIDIA.BSP.version"="{{ BSP_VERSION }}"
 LABEL "NVIDIA.UEFI.version"="{{ UEFI_VERSION }}"
 {% endif %}
 LABEL "NVIDIA.DOCA.version"="{{ D_DOCA_VERSION }}"
+{% if D_DOCA_URL_VERSION is defined %}
+LABEL "NVIDIA.DOCA.url-version"="{{ D_DOCA_URL_VERSION }}"
+{% endif %}
 LABEL "NVIDIA.OFED.version"="{{ D_OFED_VERSION }}"
 LABEL "bluefield-ocp.version"="{{ BLUEFIELD_OCP_VERSION | default('') }}"
 LABEL "bluefield-ocp.branch"="{{ BLUEFIELD_OCP_BRANCH | default('') }}"
