@@ -8,7 +8,7 @@ RHEL_SOURCE   ?= rhsm
 REDHAT_REPO   ?=
 # Space-separated optional features, see `make list`.
 OPTIONALS     ?=
-KERNEL_TYPE   ?= default
+KERNEL_TYPE   ?= 4k
 
 OCP_VERSION ?= 4.22.0
 DOCA_VERSION      ?= 3.4.0
