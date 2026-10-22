@@ -93,7 +93,7 @@ invocation (as `make` variables or exported environment variables):
 | `DOCA_VERSION` | `3.4.0` | NVIDIA DOCA version |
 | `OFED_VERSION` | `26.04-0.8.5.0` | NVIDIA OFED version |
 | `DOCA_DISTRO` | `rhel10.2` | DOCA distro path in the repository |
-| `KERNEL_TYPE` | `default` | `64k` selects the 64k page-size kernel |
+| `KERNEL_TYPE` | `4k` | `64k` selects the 64k page-size kernel |
 | `RHEL_SOURCE` | `rhsm` | `repo-file` overrides `redhat.repo` with `REDHAT_REPO=<path>` |
 | `IMAGE_TAG` | `bluefield-ocp:$OCP_VERSION-latest` | Output image tag |
 
